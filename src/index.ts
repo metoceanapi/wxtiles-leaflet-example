@@ -1,10 +1,9 @@
 import { WxTileLogging, WxTileLibSetup, WxTileWatermark, WxTileLayer, WxGetColorStyles } from '@metservice/wxtiles-leaflet';
-// import { ColorStylesWeakMixed, Units, ColorSchemes, LibSetupObject } from '@metservice/wxtiles-leaflet';
 import '@metservice/wxtiles-leaflet/dist/es/bundle.css';
 
-import colorStyles from './styles/styles.json';
-import colorSchemes from './styles/colorschemes.json';
-import units from './styles/uconv.json';
+import colorStyles from './styles/styles';
+import colorSchemes from './styles/colorschemes';
+import units from './styles/uconv';
 
 declare global {
 	interface Window {
@@ -21,7 +20,7 @@ function start() {
 	WxTileLogging(true); // use wxtiles logging -> console.log
 	WxTileWatermark({ URI: 'res/wxtiles-logo.png', position: 'topleft' }).addTo(map); // set the correct URI
 	// ESSENTIAL step to get lib ready.
-	WxTileLibSetup({ colorStyles: <any>colorStyles, units: <any>units, colorSchemes }); // load fonts and styles, units, colorschemas - empty => defaults
+	WxTileLibSetup({ colorStyles, units, colorSchemes }); // load fonts and styles, units, colorschemas - empty => defaults
 
 	// SCALAR field setup
 	const layerS = WxTileLayer({
