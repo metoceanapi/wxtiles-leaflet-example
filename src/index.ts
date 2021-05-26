@@ -1,5 +1,10 @@
 import { WxTileLogging, WxTileLibSetup, WxTileWatermark, WxTileLayer, WxGetColorStyles } from '@metservice/wxtiles-leaflet';
+// import { ColorStylesWeakMixed, Units, ColorSchemes, LibSetupObject } from '@metservice/wxtiles-leaflet';
 import '@metservice/wxtiles-leaflet/dist/es/bundle.css';
+
+import colorStyles from './styles/styles.json';
+import colorSchemes from './styles/colorschemes.json';
+import units from './styles/uconv.json';
 
 declare global {
 	interface Window {
@@ -9,37 +14,14 @@ declare global {
 
 const L = window.L;
 
-// json loader helper
-async function fetchJson(url: string) {
-	return (await fetch(url)).json();
-}
-
-async function start() {
+function start() {
 	// Leaflet basic setup // set the main Leaflet's map object, compose and add base layers
 	const map = L.map('map', { center: [-37.803113, 174.878166], zoom: 5, zoomControl: false });
 
 	WxTileLogging(true); // use wxtiles logging -> console.log
 	WxTileWatermark({ URI: 'res/wxtiles-logo.png', position: 'topleft' }).addTo(map); // set the correct URI
-	let colorStyles: any, units: any, colorSchemes: any;
-	try {
-		// these URIs are for the demo purpose. set the correct URI
-		colorStyles = await fetchJson('styles/styles.json'); // set the correct URI
-	} catch (e) {
-		console.log(e);
-	}
-	try {
-		units = await fetchJson('styles/uconv.json'); // set the correct URI
-	} catch (e) {
-		console.log(e);
-	}
-	try {
-		colorSchemes = await fetchJson('styles/colorschemes.json'); // set the correct URI
-	} catch (e) {
-		console.log(e);
-	}
-
 	// ESSENTIAL step to get lib ready.
-	WxTileLibSetup({ colorStyles, units, colorSchemes }); // load fonts and styles, units, colorschemas - empty => defaults
+	WxTileLibSetup({ colorStyles: <any>colorStyles, units: <any>units, colorSchemes }); // load fonts and styles, units, colorschemas - empty => defaults
 
 	// SCALAR field setup
 	const layerS = WxTileLayer({

@@ -35,6 +35,6 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@metservice/wxtiles-leaflet": "^1.0.2"
+    "@metservice/wxtiles-leaflet": "^1.0.5"
   }
 }

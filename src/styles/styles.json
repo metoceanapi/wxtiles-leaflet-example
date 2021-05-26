@@ -44,8 +44,6 @@
 		"showBelowMin": true,
 		"showAboveMax": true,
 		"colorScheme": "rainbow",
-		"colors": null,
-		"colorMap": null,
 		"levels": [0, 10, 20, 30, 40, 50],
 		"blurRadius": 0,
 		"addDegrees": 0,
