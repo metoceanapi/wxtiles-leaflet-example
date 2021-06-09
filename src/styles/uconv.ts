@@ -1,4 +1,4 @@
-import { Units } from '@metservice/wxtiles-leaflet';
+import { Units } from '@metoceanapi/wxtiles-leaflet';
 
 const units: Units = {
 	comment1: ["'degC': ['K', 1, 273.15] -> degC = K * 1 + 273.15", 0],

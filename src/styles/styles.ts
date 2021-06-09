@@ -1,4 +1,4 @@
-import { ColorStylesWeakMixed } from '@metservice/wxtiles-leaflet';
+import { ColorStylesWeakMixed } from '@metoceanapi/wxtiles-leaflet';
 
 const colorStyles: ColorStylesWeakMixed = {
 	Direction: {

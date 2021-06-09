@@ -1,5 +1,5 @@
-import { WxTileLogging, WxTileLibSetup, WxTileWatermark, WxTileLayer, WxGetColorStyles } from '@metservice/wxtiles-leaflet';
-import '@metservice/wxtiles-leaflet/dist/es/bundle.css';
+import { WxTileLogging, WxTileLibSetup, WxTileWatermark, WxTileLayer, WxGetColorStyles } from '@metoceanapi/wxtiles-leaflet';
+import '@metoceanapi/wxtiles-leaflet/dist/es/bundle.css';
 
 import colorStyles from './styles/styles';
 import colorSchemes from './styles/colorschemes';
