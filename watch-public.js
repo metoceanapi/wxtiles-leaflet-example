@@ -1,7 +1,5 @@
 const esbuild = require('esbuild');
-const open = require('open');
 const express = require('express');
-const cors = require('cors');
 
 let watchResponse;
 const disableHotReload = process.env.DISABLE_HOT_RELOAD === 'true';
@@ -31,7 +29,6 @@ esbuild
 	})
 	.then((result) => {
 		const app = express();
-		app.use(cors());
 		app.use(express.static('public'));
 
 		const PORT = 3002;
@@ -48,6 +45,5 @@ esbuild
 		app.listen(PORT, () => {
 			console.log(`Dev is running at ${url}`);
 		});
-		open(url);
 	})
 	.catch((e) => console.error(e.message));
