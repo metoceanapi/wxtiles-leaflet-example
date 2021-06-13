@@ -1,8 +1,8 @@
 const esbuild = require('esbuild');
 const express = require('express');
 
-let watchResponse;
-const disableHotReload = process.env.DISABLE_HOT_RELOAD === 'true';
+// let watchResponse;
+// const disableHotReload = process.env.DISABLE_HOT_RELOAD === 'true';
 
 esbuild
 	.build({
@@ -22,7 +22,7 @@ esbuild
 					console.error('watch build failed:', error);
 				} else {
 					console.log('rebuilded', new Date());
-					!disableHotReload && watchResponse && watchResponse.write('data: refresh\n\n');
+					// !disableHotReload && watchResponse && watchResponse.write('data: refresh\n\n');
 				}
 			},
 		},
