@@ -4,7 +4,7 @@
 	"description": "NPM @metservice/wxtiles-leaflet lib using demo ",
 	"main": "src/index.ts",
 	"scripts": {
-		"build": "rm -rf dist/ && node build.js && tsc",
+		"build": "rm -rf dist/ && node build.js",
 		"start": "node watch-public.js"
 	},
 	"repository": {
@@ -22,11 +22,13 @@
 	},
 	"homepage": "https://github.com/metoceanapi/wxtiles-leaflet-example#readme",
 	"devDependencies": {
+		"@types/leaflet": "^1.7.5",
 		"esbuild": "^0.11.16",
+		"esbuild-plugin-external-global": "^1.0.1",
 		"express": "^4.17.1",
 		"typescript": "^4.2.4"
 	},
 	"dependencies": {
-		"@metoceanapi/wxtiles-leaflet": "^1.0.5"
+		"@metoceanapi/wxtiles-leaflet": "^1.0.6-1"
 	}
 }
