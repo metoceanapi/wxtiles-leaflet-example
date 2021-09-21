@@ -1,5 +1,5 @@
 {
-	"name": "wxtiles-leaflet-npm",
+	"name": "wxtiles-leaflet-example",
 	"version": "1.0.0",
 	"description": "NPM @metservice/wxtiles-leaflet lib using demo ",
 	"main": "src/index.ts",
@@ -9,7 +9,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/metoceanapi/wxtiles-leaflet-npm.git"
+		"url": "git+https://github.com/metoceanapi/wxtiles-leaflet-example.git"
 	},
 	"keywords": [
 		"wxtiles",
@@ -18,9 +18,9 @@
 	"author": "Sergei Melman",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/metoceanapi/wxtiles-leaflet-npm/issues"
+		"url": "https://github.com/metoceanapi/wxtiles-leaflet-example/issues"
 	},
-	"homepage": "https://github.com/metoceanapi/wxtiles-leaflet-npm#readme",
+	"homepage": "https://github.com/metoceanapi/wxtiles-leaflet-example#readme",
 	"devDependencies": {
 		"esbuild": "^0.11.16",
 		"express": "^4.17.1",
