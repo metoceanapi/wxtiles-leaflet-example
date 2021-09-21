@@ -1,28 +1,28 @@
 const esbuild = require('esbuild');
 const express = require('express');
-
-// let watchResponse;
-// const disableHotReload = process.env.DISABLE_HOT_RELOAD === 'true';
+const { externalGlobalPlugin } = require('esbuild-plugin-external-global');
 
 esbuild
 	.build({
 		entryPoints: ['src/index.ts'],
 		bundle: true,
-		plugins: [],
+		plugins: [
+			externalGlobalPlugin({
+				leaflet: 'window.L',
+			}),
+		],
 		loader: {},
-		target: 'es6',
+		target: ['es2020', 'chrome80', 'safari13', 'edge89', 'firefox70'],
 		format: 'iife',
 		outfile: 'public/script/script.js',
-		globalName: 'script',
-		sourcemap: true,
-		// minify: false,
+		sourcemap: false,
+		minify: true,
 		watch: {
 			onRebuild(error, result) {
 				if (error) {
 					console.error('watch build failed:', error);
 				} else {
 					console.log('rebuilded', new Date());
-					// !disableHotReload && watchResponse && watchResponse.write('data: refresh\n\n');
 				}
 			},
 		},
@@ -32,14 +32,6 @@ esbuild
 		app.use(express.static('public'));
 
 		const PORT = 3002;
-
-		app.get('/watch', function (req, res) {
-			res.writeHead(200, {
-				'Content-Type': 'text/event-stream',
-				'Cache-Control': 'no-cache',
-				Connection: 'keep-alive',
-			});
-		});
 
 		const url = `http://localhost:${PORT}`;
 		app.listen(PORT, () => {
