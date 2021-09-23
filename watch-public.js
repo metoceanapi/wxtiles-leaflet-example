@@ -1,22 +1,19 @@
 const esbuild = require('esbuild');
 const express = require('express');
-const { externalGlobalPlugin } = require('esbuild-plugin-external-global');
 
 esbuild
 	.build({
 		entryPoints: ['src/index.ts'],
 		bundle: true,
-		plugins: [
-			externalGlobalPlugin({
-				leaflet: 'window.L',
-			}),
-		],
-		loader: {},
+		plugins: [],
+		loader: {
+			'.png': 'base64',
+		},
 		target: ['es2020', 'chrome80', 'safari13', 'edge89', 'firefox70'],
 		format: 'iife',
 		outfile: 'public/script/script.js',
-		sourcemap: false,
-		minify: true,
+		sourcemap: true,
+		minify: false,
 		watch: {
 			onRebuild(error, result) {
 				if (error) {

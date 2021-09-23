@@ -1,17 +1,14 @@
-const esbuild = require('esbuild');
 
-const { externalGlobalPlugin } = require('esbuild-plugin-external-global');
+const esbuild = require('esbuild');
 
 esbuild
 	.build({
 		entryPoints: ['src/index.ts'],
 		bundle: true,
-		plugins: [
-			externalGlobalPlugin({
-				leaflet: 'window.L',
-			}),
-		],
-		loader: {},
+		plugins: [],
+		loader: {
+			'.png': 'base64',
+		},
 		target: ['es2020', 'chrome80', 'safari13', 'edge89', 'firefox70'],
 		format: 'iife',
 		outfile: 'public/script/script.js',

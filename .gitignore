@@ -60,6 +60,6 @@ typings/
 .vscode
 
 # Dist file
-/dist
+/public/script
 
 package-lock.json

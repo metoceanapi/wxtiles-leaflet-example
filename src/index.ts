@@ -1,23 +1,24 @@
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet'; // goes first always!
+
 import '@metoceanapi/wxtiles-leaflet/dist/es/wxtiles.css';
-import { WxTilesLogging, WxTilesLibSetup, WxTilesWatermark, WxTilesLayer } from '@metoceanapi/wxtiles-leaflet';
+import { WxTilesLogging, WxTilesLibSetup, CreateWxTilesWatermark, CreateWxTilesLayer } from '@metoceanapi/wxtiles-leaflet';
 
 import colorStyles from './styles/styles';
 import colorSchemes from './styles/colorschemes';
 import units from './styles/uconv';
-
-import L from 'leaflet';
 
 function start() {
 	// Leaflet basic setup // set the main Leaflet's map object, compose and add base layers
 	const map = L.map('map', { center: [-37.803113, 174.878166], zoom: 5, zoomControl: false });
 
 	WxTilesLogging(true); // use wxtiles logging -> console.log
-	WxTilesWatermark({ URI: 'res/wxtiles-logo.png', position: 'topleft' }).addTo(map); // set the correct URI
+	CreateWxTilesWatermark({ URI: 'res/wxtiles-logo.png', position: 'topleft' }).addTo(map); // set the correct URI
 	// ESSENTIAL step to get lib ready.
 	WxTilesLibSetup({ colorStyles, units, colorSchemes }); // load fonts and styles, units, colorschemas - empty => defaults
 
 	// SCALAR field setup
-	const layerS = WxTilesLayer({
+	const layerS = CreateWxTilesLayer({
 		dataSource: {
 			serverURI: 'https://tiles.metoceanapi.com/data', // server to fetch data from
 			ext: 'png', // png / webp (default) - wxtilesplitter output format
@@ -36,6 +37,7 @@ function start() {
 			opacity: 0.99,
 		},
 	});
+
 	layerS.addTo(map);
 }
 
