@@ -137,7 +137,6 @@ function fillTimes(layer: WxTilesLayer) {
 
 function startPlay() {
 	if (!globalLayer) return;
-	// const nextTimeStep = async () => { };
 	buttonPlayStopEl.textContent = 'stop';
 	globalLayer.setTimeAnimationMode(+inputCoarseLevelEl.value);
 	setTimeout(async function nextTimeStep() {
@@ -149,7 +148,7 @@ function startPlay() {
 			selectTimeEl.selectedIndex %= selectTimeEl.length;
 			const dt = +inputAnimDelayEl.value - (Date.now() - start);
 			setTimeout(nextTimeStep, dt < 0 ? 0 : dt);
-			updateInfoPanel(undefined);
+			oldE && updateInfoPanel(oldE);
 		}
 	});
 }
@@ -159,7 +158,7 @@ function stopPlay() {
 	globalLayer?.unsetTimeAnimationMode();
 }
 
-function addOption(baseStyle, value = baseStyle) {
+function addOption(baseStyle: string, value = baseStyle) {
 	const opt = document.createElement('option');
 	opt.appendChild(document.createTextNode(baseStyle));
 	opt.value = value;
@@ -296,16 +295,13 @@ function drawLegend({ legend, canvas }: { legend: Legend; canvas: HTMLCanvasElem
 	ctx.strokeRect(1, 1, width - 3, height - 2); //for white background
 }
 
-let oldE;
-function updateInfoPanel(e: any | undefined) {
-	oldE = e = e ?? oldE; // save or restore 'e'
-	if (!e) return;
+let oldE: L.LeafletMouseEvent | undefined;
+function updateInfoPanel(e: L.LeafletMouseEvent) {
+	oldE = e; // save 'e'
 	let content = '' + `${e.latlng}<br>`;
-	map.eachLayer((_layer) => {
-		if ('getTile' in _layer) {
-			const layer = _layer as WxTilesLayer;
-			// check if layer is a wxLayer
-			const tile = layer.getTile(e.latlng);
+	map.eachLayer((layer) => {
+		if (layer instanceof WxTilesLayer) {
+			const tile = layer.getTile(e!.latlng);
 			const { min, max } = layer.getMinMax();
 
 			content += tile
@@ -320,12 +316,10 @@ function updateInfoPanel(e: any | undefined) {
 	infoPanelEl.innerHTML = content;
 }
 
-function popupInfo(e) {
+function popupInfo(e: L.LeafletMouseEvent) {
 	let content = '';
-	map.eachLayer((_layer) => {
-		if ('getTile' in _layer) {
-			const layer = _layer as WxTilesLayer;
-			// check if layer is a wxLayer
+	map.eachLayer((layer) => {
+		if (layer instanceof WxTilesLayer) {
 			const tile = layer.getTile(e.latlng);
 			const time = layer.getTime();
 			content += tile
@@ -349,7 +343,7 @@ function popupInfo(e) {
 		.openOn(map);
 }
 
-function createControl(opt) {
+function createControl(opt: L.ControlOptions & { htmlID: string }): L.Control {
 	return new (L.Control.extend({
 		onAdd() {
 			return document.getElementById(opt.htmlID);
