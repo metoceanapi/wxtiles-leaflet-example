@@ -18,7 +18,7 @@
 				"minZoom": 0,
 				"tms": false
 			},
-			"add": false
+			"add": true
 		},
 		{
 			"name": "land outlines",
@@ -38,7 +38,7 @@
 				"maxZoom": 18,
 				"minZoom": 0
 			},
-			"add": false
+			"add": true
 		},
 		{
 			"name": "base-bathy",

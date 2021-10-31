@@ -1,7 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet'; // goes first always!
 
-import '@metoceanapi/wxtiles-leaflet/dist/es/wxtiles.css';
 import {
 	WxTilesLogging,
 	WxTilesLibSetup,
@@ -14,19 +13,21 @@ import {
 import { ColorStylesStrict } from '@metoceanapi/wxtiles-leaflet/dist/es/wxtools';
 import { Legend } from '@metoceanapi/wxtiles-leaflet/dist/es/RawCLUT';
 import { Meta } from '@metoceanapi/wxtiles-leaflet/dist/es/tilesLayer';
+import '@metoceanapi/wxtiles-leaflet/dist/es/wxtiles.css';
+
 let map: L.Map;
 let layerControl: L.Control.Layers;
-let config;
+let config: Config; // application config
 let styles: ColorStylesStrict; // all available styles. Not every style is sutable for every layer.
 let globalLayer: WxTilesLayer | undefined; // current layer
 
 // json loader helper
-async function fetchJson(url) {
+async function fetchJson(url: string) {
 	return (await fetch(url)).json();
 }
 
 async function fillDataSets() {
-	let datasetsNames;
+	let datasetsNames: string[];
 
 	try {
 		datasetsNames = await fetchJson(config.dataServer + '/datasets.json');
@@ -167,10 +168,12 @@ function addOption(baseStyle: string, value = baseStyle) {
 
 function fillStyles(layer: WxTilesLayer) {
 	selectStyleEl.innerHTML = '';
-	for (const [regexp, styleName] of config.varToStyleMap) {
-		const regExp = new RegExp(regexp, 'i');
-		if (styleName in styles && regExp.test(layer.dataSource.variables[0])) {
-			addOption(styles[styleName].name, styleName);
+	if (config.varToStyleMap) {
+		for (const [regexp, styleName] of config.varToStyleMap) {
+			const regExp = new RegExp(regexp, 'i');
+			if (styleName in styles && regExp.test(layer.dataSource.variables[0])) {
+				addOption(styles[styleName].name, styleName);
+			}
 		}
 	}
 
@@ -351,12 +354,28 @@ function createControl(opt: L.ControlOptions & { htmlID: string }): L.Control {
 	}))(opt);
 }
 
+interface BaseLayerOptions {
+	name: string;
+	URL: string;
+	options?: L.TileLayerOptions;
+	add?: boolean;
+}
+interface Config {
+	dataServer: string;
+	ext: 'webp' | 'png';
+	map?: L.MapOptions;
+	baseLayers?: BaseLayerOptions[];
+	varToStyleMap?: [string, string][];
+}
+
 async function start() {
 	// read config
 	try {
 		config = await fetchJson('props/config.json'); // set the correct URI
 	} catch (e) {
 		console.log(e);
+		alert('No props/config.json');
+		return;
 	}
 
 	// Leaflet basic setup // set the main Leaflet's map object, compose and add base layers
@@ -366,9 +385,10 @@ async function start() {
 	WxTilesLogging(true); // use wxtiles logging -> console.log
 	CreateWxTilesWatermark({ URI: 'res/wxtiles-logo.png', position: 'topright' }).addTo(map);
 	layerControl = L.control.layers(undefined, undefined, { position: 'topright', autoZIndex: false, collapsed: false }).addTo(map);
-	config.baseLayers.map((baseLayer) => {
+	config.baseLayers?.map((baseLayer) => {
+		if (!baseLayer.add) return;
 		const layer = L.tileLayer(baseLayer.URL, baseLayer.options);
-		baseLayer.options.zIndex === 0 ? layerControl.addBaseLayer(layer, baseLayer.name) : layerControl.addOverlay(layer, baseLayer.name);
+		baseLayer.options?.zIndex === 0 ? layerControl.addBaseLayer(layer, baseLayer.name) : layerControl.addOverlay(layer, baseLayer.name);
 	});
 	layerControl.addOverlay(CreateWxDebugCoordsLayer(), 'tile boundaries');
 	layerControl.addBaseLayer(L.tileLayer('').addTo(map), 'base-empty');
@@ -385,11 +405,13 @@ async function start() {
 	} catch (e) {
 		console.log(e);
 	}
+
 	try {
 		wxlibCustomSettings.units = await fetchJson('props/uconv.json'); // set the correct URI
 	} catch (e) {
 		console.log(e);
 	}
+	
 	try {
 		wxlibCustomSettings.colorSchemes = await fetchJson('props/colorschemes.json'); // set the correct URI
 	} catch (e) {
@@ -400,15 +422,7 @@ async function start() {
 	WxTilesLibSetup(wxlibCustomSettings); // load fonts and styles, units, colorschemas - empty => defaults
 	await document.fonts.ready; // !!! IMPORTANT: make sure fonts (barbs, arrows, etc) are loaded
 
-	// WxDebugCoordsLayer().addTo(map);
-
 	styles = WxGetColorStyles(); // all available styles. Not every style is sutable for this layer.
-
-	// {
-	// 	const sorted = JSONsort(styles);
-	// 	const str = JSON.stringify(sorted);
-	// 	console.dir(str);
-	// }
 
 	fillDataSets();
 
