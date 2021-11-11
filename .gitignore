@@ -61,5 +61,6 @@ typings/
 
 # Dist file
 /public/script
+www
 
 package-lock.json

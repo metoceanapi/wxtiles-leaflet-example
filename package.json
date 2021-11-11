@@ -1,11 +1,18 @@
 {
 	"name": "wxtiles-leaflet-example",
 	"version": "1.0.0",
+	"config": {
+		"server": "metocean@tira7.acenet.metocean.co.nz",
+		"path": "/data_local/wxtilesfront/wxtile-js-demo/"
+	},
 	"description": "NPM @metservice/wxtiles-leaflet lib using demo ",
 	"main": "src/index.ts",
 	"scripts": {
 		"build": "rm -rf public/script && node build.js",
-		"start": "node watch-public.js"
+		"start": "node watch-public.js",
+		"copy": "npm run build && rm -rf ./wxtile/www/ && rsync -avh ./public/ ./wxtile/www/",
+		"publish": "npm run copy && rsync -avh ./wxtile/ $npm_package_config_server:$npm_package_config_path && ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down && docker-compose up -d\"",
+		"remote-ssh--": "gnome-terminal -- ssh -t $npm_package_config_server \"cd $npm_package_config_path ; bash\""
 	},
 	"repository": {
 		"type": "git",
@@ -29,6 +36,6 @@
 		"typescript": "^4.2.4"
 	},
 	"dependencies": {
-		"@metoceanapi/wxtiles-leaflet": "^1.0.6-13"
+		"@metoceanapi/wxtiles-leaflet": "^1.0.7"
 	}
 }

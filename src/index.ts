@@ -9,6 +9,7 @@ import {
 	CreateWxDebugCoordsLayer,
 	WxGetColorStyles,
 	WxTilesLayer,
+	LoadQTree,
 } from '@metoceanapi/wxtiles-leaflet';
 import { ColorStylesStrict } from '@metoceanapi/wxtiles-leaflet/dist/es/wxtools';
 import { Legend } from '@metoceanapi/wxtiles-leaflet/dist/es/RawCLUT';
@@ -86,9 +87,11 @@ async function loadVariable_selectVariableEl_onchange() {
 	if (variable.includes('eastward')) {
 		variables.push(variable.replace('eastward', 'northward'));
 	}
+
 	const layerSettings = {
 		dataSource: {
 			serverURI: config.dataServer, // server to fetch data from
+			maskServerURI: config.dataServer.replace(/\/data\/?/i, '/mask/{z}/{x}/{y}'),
 			ext: config.ext, // png / webp (default) - wxtilesplitter output format
 			dataset: selectDataSetEl.value, // dataset of the dataset
 			variables, // variable(s) to be used for the layer rendering
@@ -411,7 +414,7 @@ async function start() {
 	} catch (e) {
 		console.log(e);
 	}
-	
+
 	try {
 		wxlibCustomSettings.colorSchemes = await fetchJson('props/colorschemes.json'); // set the correct URI
 	} catch (e) {
@@ -421,6 +424,7 @@ async function start() {
 	// ESSENTIAL step to get lib ready.
 	WxTilesLibSetup(wxlibCustomSettings); // load fonts and styles, units, colorschemas - empty => defaults
 	await document.fonts.ready; // !!! IMPORTANT: make sure fonts (barbs, arrows, etc) are loaded
+	await LoadQTree(config.dataServer + 'seamask.qtree');
 
 	styles = WxGetColorStyles(); // all available styles. Not every style is sutable for this layer.
 
