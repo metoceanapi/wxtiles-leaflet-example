@@ -3,11 +3,12 @@ const express = require('express');
 
 esbuild
 	.build({
-		entryPoints: ['src/index.ts'],
+		entryPoints: ['src_example/index.ts'],
 		bundle: true,
 		plugins: [],
 		loader: {
 			'.png': 'base64',
+			'.woff': 'base64',
 		},
 		target: ['es2020', 'chrome80', 'safari13', 'edge89', 'firefox70'],
 		format: 'iife',

@@ -3,7 +3,7 @@ const esbuild = require('esbuild');
 
 esbuild
 	.build({
-		entryPoints: ['src/index.ts'],
+		entryPoints: ['src_example/index.ts'],
 		bundle: true,
 		plugins: [],
 		loader: {
