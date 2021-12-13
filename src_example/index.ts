@@ -448,6 +448,7 @@ selectStyleEl.addEventListener('change', onStyleChange_selectStyleEl_onchange);
 
 const legendCanvasEl = document.getElementById('legend') as HTMLCanvasElement;
 
+const customStyleDivEl = document.getElementById('customStyleDiv') as HTMLDivElement;
 const customStyleEl = document.getElementById('customStyle') as HTMLTextAreaElement;
 customStyleEl.addEventListener('change', () => {
 	selectStyleEl.value = 'custom';
@@ -456,11 +457,11 @@ customStyleEl.addEventListener('change', () => {
 
 const customStyleButtonEl = document.getElementById('customStyleButton')! as HTMLButtonElement;
 customStyleButtonEl.addEventListener('click', () => {
-	if (customStyleEl.style.display != 'none') {
-		customStyleEl.style.display = 'none';
+	if (customStyleDivEl.style.display != 'none') {
+		customStyleDivEl.style.display = 'none';
 		customStyleButtonEl.innerHTML = 'show Custom Style Editor';
 	} else {
-		customStyleEl.style.display = 'block';
+		customStyleDivEl.style.display = 'block';
 		customStyleButtonEl.innerHTML = 'update Custom Style & Hide';
 		selectStyleEl.value = 'custom';
 	}

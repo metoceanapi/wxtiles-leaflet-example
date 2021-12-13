@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"config": {
 		"server": "metocean@tira7.acenet.metocean.co.nz",
+		"server1": "metocean@tiles.metoceanapi.com",
 		"path": "/data_local/wxtilesfront/wxtile-js-demo/"
 	},
 	"description": "NPM @metservice/wxtiles-leaflet lib using demo ",
@@ -36,6 +37,6 @@
 		"typescript": "^4.2.4"
 	},
 	"dependencies": {
-		"@metoceanapi/wxtiles-leaflet": "^1.0.10"
+		"@metoceanapi/wxtiles-leaflet": "^1.0.12"
 	}
 }
