@@ -4,7 +4,7 @@
 	"config": {
 		"server": "metocean@tira7.acenet.metocean.co.nz",
 		"server1": "metocean@tiles.metoceanapi.com",
-		"path": "/data_local/wxtilesfront/wxtile-js-demo/"
+		"path": "/data_local/wxtilesfront/wxtile-leaflet-demo/"
 	},
 	"description": "NPM @metservice/wxtiles-leaflet lib using demo ",
 	"main": "src/index.ts",
@@ -12,7 +12,8 @@
 		"build": "rm -rf public/script && node build.js",
 		"start": "node watch-public.js",
 		"copy": "npm run build && rm -rf ./wxtile/www/ && rsync -avh ./public/ ./wxtile/www/",
-		"publish": "npm run copy && rsync -avh ./wxtile/ $npm_package_config_server:$npm_package_config_path && ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down && docker-compose up -d\"",
+		"wxtile-publish-up":"npm run copy && rsync -avh ./wxtile/ $npm_package_config_server:$npm_package_config_path/ && ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down && docker-compose up -d\"",
+		"wxtile-nginx-down": "ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down\"",
 		"remote-ssh--": "gnome-terminal -- ssh -t $npm_package_config_server \"cd $npm_package_config_path ; bash\""
 	},
 	"repository": {
@@ -37,6 +38,6 @@
 		"typescript": "^4.2.4"
 	},
 	"dependencies": {
-		"@metoceanapi/wxtiles-leaflet": "^1.0.12"
+		"@metoceanapi/wxtiles-leaflet": "^1.0.14"
 	}
 }
