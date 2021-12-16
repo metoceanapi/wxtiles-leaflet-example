@@ -15,6 +15,7 @@ import { ColorStylesStrict } from '@metoceanapi/wxtiles-leaflet/dist/es/wxtools'
 import { Legend } from '@metoceanapi/wxtiles-leaflet/dist/es/RawCLUT';
 import { Meta } from '@metoceanapi/wxtiles-leaflet/dist/es/tilesLayer';
 import '@metoceanapi/wxtiles-leaflet/dist/es/wxtiles.css';
+import { createEditor } from './visualStyleEditor';
 
 let map: L.Map;
 let layerControl: L.Control.Layers;
@@ -208,7 +209,7 @@ function onStyleChange_selectStyleEl_onchange() {
 	if (!globalLayer) return;
 	if (selectStyleEl.value === 'custom') {
 		try {
-			styles.custom = JSON.parse(customStyleEl.value);
+			styles.custom = JSON.parse(customStyleTextAreaEl.value);
 		} catch {
 			console.log('Wrong custom style');
 			const ctx = legendCanvasEl.getContext('2d');
@@ -224,7 +225,8 @@ function onStyleChange_selectStyleEl_onchange() {
 	globalLayer.setStyle(selectStyleEl.value);
 	const curStyleName = globalLayer.getStyle();
 	const curStyle = styles[curStyleName];
-	customStyleEl.value = JSON.stringify(JSONsort(curStyle), null, '    ');
+	customStyleTextAreaEl.value = JSON.stringify(JSONsort(curStyle), null, '    ');
+	editor.updateFromStyle(curStyle);
 	const legend = globalLayer.getLegendData(legendCanvasEl.width - 50);
 	if (!legend) return;
 	drawLegend({ legend, canvas: legendCanvasEl });
@@ -449,8 +451,14 @@ selectStyleEl.addEventListener('change', onStyleChange_selectStyleEl_onchange);
 const legendCanvasEl = document.getElementById('legend') as HTMLCanvasElement;
 
 const customStyleDivEl = document.getElementById('customStyleDiv') as HTMLDivElement;
-const customStyleEl = document.getElementById('customStyle') as HTMLTextAreaElement;
-customStyleEl.addEventListener('change', () => {
+const customStyleTextAreaEl = document.getElementById('customStyleTextArea') as HTMLTextAreaElement;
+const editor = createEditor(customStyleDivEl, 'visualCustomStyleDivId', 'visualCustomStyleDivClass');
+editor.onchange = (style) => {
+	selectStyleEl.value = 'custom';
+	customStyleTextAreaEl.value = JSON.stringify(style, null, '    ');
+	onStyleChange_selectStyleEl_onchange();
+};
+customStyleTextAreaEl.addEventListener('change', () => {
 	selectStyleEl.value = 'custom';
 	onStyleChange_selectStyleEl_onchange();
 });

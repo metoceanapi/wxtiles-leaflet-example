@@ -67,59 +67,8 @@
 				onmousemove="event.stopPropagation();"
 			>
 				<button id="customStyleButton" style="height: 1.5em; background-color: gray">show Custom Style Editor</button>
-				<div
-					id="customStyleDiv"
-					style="display: block; border-color: black; border-style: solid; border-width: 2px; background-color: rgba(135, 206, 250, 0.8)"
-				>
-					<div>
-						<input id="parent" type="text" name="parent" value="base" />parent
-						<br />
-						<input id="name" type="text" name="name" value="base" />name
-						<br />
-						<input id="addDegrees" type="number" style="width: 3ch" min="0" max="360" step="1" value="0" />addDegrees
-						<input id="blurRadius" type="number" style="width: 3ch" min="0" max="10" step="1" value="0" />blurRadius
-						<br />
-						<select id="colorScheme">
-							<option value="va1">1</option></select
-						>colorScheme
-						<select id="fill">
-							<option value="gradient">gradient</option>
-							<option value="solid">solid</option>
-							<option value="none">none</option></select
-						>fill
-						<select id="mask">
-							<option value="none">none</option>
-							<option value="sea">sea</option>
-							<option value="land">land</option></select
-						>mask
-						<br />
-						<select id="isolineColor">
-							<option value="inverted">inverted</option>
-							<option value="fill">fill</option>
-							<option value="none">none</option></select
-						>isolineColor
-
-						<input id="isolineText" type="checkbox" checked="true" />isolineText
-						<br />
-
-						<input id="showAboveMax" type="checkbox" checked="true" />showAboveMax
-
-						<input id="showBelowMin" type="checkbox" checked="true" />showBelowMin
-						<br />
-						<input type="color" id="streamLineColor" name="streamLineColor" value="#777" />
-						<label for="streamLineColor">streamLineColor</label>
-						<br />
-						<input id="number" type="number" style="width: 6ch" value="1.0" min="0.1" step="0.1" />streamLineSpeedFactor
-						<input id="streamLineStatic" type="checkbox" />streamLineStatic
-						<br />
-						<input id="units" type="text" name="units" value="nounits" />units
-						<br />
-						<select id="vectorColor"></select
-						>vectorColor
-						<select id="vectorType"></select
-						>vectorType
-					</div>
-					<textarea id="customStyle" style="width: 20vw; height: 50vh"></textarea>
+				<div id="customStyleDiv" style="display: none; border-color: black; border-style: solid; border-width: 2px; background-color: rgba(135, 206, 250, 0.8)">
+					<textarea id="customStyleTextArea" style="width: 20vw; height: 50vh"></textarea>
 				</div>
 			</div>
 		</div>
