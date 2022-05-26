@@ -12,7 +12,7 @@
 		"build": "rm -rf public/script && node build.js",
 		"start": "node watch-public.js",
 		"copy": "npm run build && rm -rf ./wxtile/www/ && rsync -avh ./public/ ./wxtile/www/",
-		"wxtile-publish-up":"npm run copy && rsync -avh ./wxtile/ $npm_package_config_server:$npm_package_config_path/ && ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down && docker-compose up -d\"",
+		"wxtile-publish-up": "npm run copy && rsync -avh ./wxtile/ $npm_package_config_server:$npm_package_config_path/ && ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down && docker-compose up -d\"",
 		"wxtile-nginx-down": "ssh $npm_package_config_server \"cd $npm_package_config_path && docker-compose down\"",
 		"remote-ssh--": "gnome-terminal -- ssh -t $npm_package_config_server \"cd $npm_package_config_path ; bash\""
 	},
@@ -31,13 +31,13 @@
 	},
 	"homepage": "https://github.com/metoceanapi/wxtiles-leaflet-example#readme",
 	"devDependencies": {
-		"@types/leaflet": "^1.7.5",
-		"esbuild": "^0.11.16",
+		"@types/leaflet": "^1.7.9",
+		"esbuild": "^0.14.38",
 		"esbuild-plugin-external-global": "^1.0.1",
-		"express": "^4.17.1",
-		"typescript": "^4.2.4"
+		"express": "^4.18.0",
+		"typescript": "^4.6.3"
 	},
 	"dependencies": {
-		"@metoceanapi/wxtiles-leaflet": "^1.0.15"
+		"@metoceanapi/wxtiles-leaflet": "^1.1.1"
 	}
 }

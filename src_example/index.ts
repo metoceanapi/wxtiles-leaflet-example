@@ -195,31 +195,11 @@ function fillStyles(layer: WxTilesLayer) {
 	onStyleChange_selectStyleEl_onchange();
 }
 
-function JSONsort(o: any) {
-	if (Array.isArray(o)) {
-		return o.map(JSONsort);
-	} else if (typeof o === 'object' && o !== null) {
-		const keys = Object.keys(o)
-			// .map((a) => a.toUpperCase())
-			.sort((a, b) => {
-				const aa = a.toUpperCase();
-				const bb = b.toUpperCase();
-				return aa == bb ? 0 : aa > bb ? 1 : -1;
-			});
-		return keys.reduce((a, k) => {
-			a[k] = JSONsort(o[k]);
-			return a;
-		}, {});
-	}
-	return o;
-}
-
 function onStyleChange_selectStyleEl_onchange() {
 	if (!globalLayer) return;
 	if (selectStyleEl.value === 'custom') {
-		try {
-			styles.custom = editor.getStyle(); //JSON.parse(customStyleTextAreaEl.value);
-		} catch {
+		const style = editor.getStyle();
+		if (style instanceof Error) {
 			console.log('Wrong custom style');
 			const ctx = legendCanvasEl.getContext('2d');
 			if (!ctx) return;
@@ -230,7 +210,9 @@ function onStyleChange_selectStyleEl_onchange() {
 			ctx.stroke();
 			return;
 		}
+		styles.custom = style; //JSON.parse(customStyleTextAreaEl.value);
 	}
+
 	globalLayer.setStyle(selectStyleEl.value);
 	const curStyle = globalLayer.getStyle();
 	// customStyleTextAreaEl.value = JSON.stringify(JSONsort(curStyle), null, '    ');
@@ -454,8 +436,10 @@ async function start() {
 	map.on('click', popupInfo);
 	editor = new Editor(map, styleEditorEl, selectStyleEl, { id: 'visualCustomStyleDivId', className: 'visualCustomStyleDivClass' });
 	editor.onchange = (style) => {
+		selectStyleEl.value = 'custom';
 		styles['custom'] = style;
-		globalLayer?.setStyle('custom');
+		// globalLayer?.setStyle('custom');
+		onStyleChange_selectStyleEl_onchange();
 	};
 }
 
@@ -536,7 +520,7 @@ buttonPlayStopEl.addEventListener('click', () => {
 const clearEl = document.getElementById('buttonClear')!;
 clearEl.addEventListener('click', () => {
 	map.eachLayer((l) => {
-		if ('getTile' in l) {
+		if ('clut' in l) {
 			l.removeFrom(map);
 			layerControl.removeLayer(l);
 		}
